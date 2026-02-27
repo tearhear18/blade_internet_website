@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blades Internet — Fast. Sharp. Reliable.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Barlow+Condensed:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #050a12;
+      --surface: #0b1422;
+      --card: #0e1929;
+      --blade: #00c2ff;
+      --blade2: #0070f3;
+      --accent: #ff3b3b;
+      --text: #e8f0fe;
+      --muted: #7a90aa;
+      --border: rgba(0,194,255,0.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Rajdhani', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE TEXTURE ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 200px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 3rem;
+      background: rgba(5,10,18,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.12em;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo span {
+      color: var(--blade);
+      text-shadow: 0 0 20px rgba(0,194,255,0.6);
+    }
+
+    .logo-blade {
+      width: 28px;
+      height: 28px;
+      position: relative;
+    }
+
+    .logo-blade svg { width: 100%; height: 100%; }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    nav ul a {
+      text-decoration: none;
+      color: var(--muted);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover { color: var(--blade); }
+
+    .nav-cta {
+      background: var(--blade);
+      color: var(--bg) !important;
+      padding: 0.45rem 1.2rem;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      font-weight: 700 !important;
+      transition: background 0.2s !important;
+    }
+
+    .nav-cta:hover { background: #33ccff !important; color: var(--bg) !important; }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 8rem 2rem 4rem;
+    }
+
+    /* animated grid bg */
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,194,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,194,255,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridShift 20s linear infinite;
+    }
+
+    @keyframes gridShift {
+      0% { transform: perspective(600px) rotateX(20deg) translateY(0); }
+      100% { transform: perspective(600px) rotateX(20deg) translateY(60px); }
+    }
+
+    /* glowing orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.25;
+      animation: pulse 6s ease-in-out infinite;
+    }
+
+    .orb-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, var(--blade2), transparent);
+      top: -100px; left: -100px;
+      animation-delay: 0s;
+    }
+
+    .orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, var(--blade), transparent);
+      bottom: 0; right: 100px;
+      animation-delay: 3s;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(1.08); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 1400px;
+      text-align: center;
+      gap: 2rem;
+    }
+
+    .hero-text {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      order: 2;
+    }
+
+    .hero-logo {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      order: 1;
+      animation: fadeIn 1s ease both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .hero-logo img {
+      width: 400px;
+      height: 400px;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 50px rgba(0, 194, 255, 0.4))
+              drop-shadow(0 0 80px rgba(0, 194, 255, 0.3));
+      transition: all 0.4s ease;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 194, 255, 0.2);
+      padding: 20px;
+      background: radial-gradient(circle, rgba(0, 194, 255, 0.05), transparent);
+    }
+
+    .hero-logo img:hover {
+      transform: scale(1.05) rotate(2deg);
+      filter: drop-shadow(0 15px 60px rgba(0, 194, 255, 0.6))
+              drop-shadow(0 0 100px rgba(0, 194, 255, 0.4));
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--blade);
+      background: rgba(0,194,255,0.08);
+      border: 1px solid rgba(0,194,255,0.25);
+      padding: 0.4rem 1rem;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    .badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--blade);
+      animation: blink 1.5s ease infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      line-height: 1.1;
+      letter-spacing: 0.08em;
+      color: var(--text);
+      animation: fadeUp 0.8s 0.3s ease both;
+      margin-top: -1rem;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--blade);
+      text-shadow: 0 0 40px rgba(0,194,255,0.5);
+      display: block;
+    }
+
+    .hero-sub {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.25rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-top: 1rem;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
+
+    .hero-sub strong { color: var(--text); }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .btn-primary {
+      background: var(--blade);
+      color: var(--bg);
+      border: none;
+      padding: 0.9rem 2.5rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.15em;
+      cursor: pointer;
+      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-primary:hover {
+      background: #33ccff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,194,255,0.4);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.9rem 2.5rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.15em;
+      cursor: pointer;
+      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--blade);
+      color: var(--blade);
+    }
+
+    /* ─── STATS BAR ─── */
+    .stats-bar {
+      position: relative;
+      z-index: 2;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .stat-item {
+      padding: 2rem;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      color: var(--blade);
+      line-height: 1;
+      text-shadow: 0 0 20px rgba(0,194,255,0.3);
+    }
+
+    .stat-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    /* ─── SECTION COMMONS ─── */
+    section { position: relative; padding: 6rem 2rem; z-index: 1; }
+
+    .section-tag {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--blade);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      letter-spacing: 0.05em;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .section-title span { color: var(--blade); }
+
+    /* ─── PLANS ─── */
+    .plans { max-width: 1100px; margin: 0 auto; }
+
+    .plans-header { text-align: center; margin-bottom: 4rem; }
+
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      clip-path: polygon(16px 0%, 100% 0%, calc(100% - 16px) 100%, 0% 100%);
+    }
+
+    .plan-card {
+      background: var(--card);
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .plan-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--blade), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .plan-card.featured {
+      background: #0d1f35;
+    }
+
+    .plan-card.featured::before { opacity: 1; }
+
+    .plan-card:hover { background: #111d2e; }
+    .plan-card:hover::before { opacity: 1; }
+
+    .plan-speed {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 5rem;
+      line-height: 1;
+      color: var(--blade);
+      text-shadow: 0 0 30px rgba(0,194,255,0.3);
+    }
+
+    .plan-unit {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .plan-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.1em;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+
+    .plan-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 1.5rem 0;
+    }
+
+    .plan-price {
+      display: flex;
+      align-items: baseline;
+      gap: 0.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .price-peso {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      color: var(--muted);
+    }
+
+    .price-amount {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      line-height: 1;
+      color: var(--text);
+    }
+
+    .price-period {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    .plan-features {
+      list-style: none;
+      margin: 1.5rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .plan-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.05rem;
+      color: var(--muted);
+    }
+
+    .plan-features li::before {
+      content: '▸';
+      color: var(--blade);
+      font-size: 0.7rem;
+    }
+
+    .plan-btn {
+      display: block;
+      text-align: center;
+      margin-top: 2rem;
+      padding: 0.8rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      border: 1px solid rgba(0,194,255,0.3);
+      background: transparent;
+      color: var(--blade);
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .plan-card.featured .plan-btn {
+      background: var(--blade);
+      color: var(--bg);
+      border-color: var(--blade);
+    }
+
+    .plan-btn:hover {
+      background: var(--blade);
+      color: var(--bg);
+    }
+
+    .best-badge {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background: var(--blade);
+      color: var(--bg);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+    }
+
+    /* ─── COVERAGE ─── */
+    .coverage-section {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .coverage-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .coverage-map {
+      position: relative;
+      aspect-ratio: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      clip-path: polygon(20px 0%, 100% 0%, calc(100% - 20px) 100%, 0% 100%);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .map-pin-area {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .map-rings {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ring {
+      position: absolute;
+      border: 1px solid rgba(0,194,255,0.2);
+      border-radius: 50%;
+      animation: expand 3s ease-out infinite;
+    }
+
+    .ring:nth-child(1) { width: 100px; height: 100px; animation-delay: 0s; }
+    .ring:nth-child(2) { width: 200px; height: 200px; animation-delay: 0.8s; }
+    .ring:nth-child(3) { width: 320px; height: 320px; animation-delay: 1.6s; }
+    .ring:nth-child(4) { width: 430px; height: 430px; animation-delay: 2.4s; }
+
+    @keyframes expand {
+      0% { opacity: 0.8; transform: scale(0.8); }
+      100% { opacity: 0; transform: scale(1.1); }
+    }
+
+    .map-pin-icon {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .map-pin-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--blade);
+      letter-spacing: 0.1em;
+    }
+
+    .map-pin-sub {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .coverage-info .section-title { margin-bottom: 1.5rem; }
+
+    .coverage-detail {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    .coverage-areas {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .coverage-area-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    .area-icon {
+      width: 8px; height: 8px;
+      background: var(--blade);
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+      flex-shrink: 0;
+    }
+
+    /* ─── CONTACT ─── */
+    .contact-section { max-width: 1100px; margin: 0 auto; }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+
+    .contact-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      transition: border-color 0.2s;
+    }
+
+    .contact-card:hover { border-color: rgba(0,194,255,0.4); }
+
+    .contact-icon {
+      width: 56px; height: 56px;
+      background: rgba(0,194,255,0.1);
+      border: 1px solid rgba(0,194,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+
+    .contact-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .contact-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.7rem;
+      letter-spacing: 0.08em;
+      color: var(--text);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-logo span { color: var(--blade); }
+
+    .footer-tagline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .footer-copy {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .coverage-inner { gap: 3rem; }
+      .plan-card { padding: 2.5rem 2rem; }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      nav ul { display: none; }
+
+      .hero { padding: 6rem 1.5rem 3rem; }
+
+      .hero-logo img {
+        width: 280px;
+        height: 280px;
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: clamp(3rem, 10vw, 5rem) !important;
+      }
+
+      .hero-sub {
+        font-size: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .hero-badge {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.8rem;
+      }
+
+      .btn-primary, .btn-ghost {
+        padding: 0.8rem 2rem;
+        font-size: 1.1rem;
+        width: 100%;
+        max-width: 280px;
+      }
+
+      .stats-bar { grid-template-columns: 1fr; }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--border); padding: 1.5rem; }
+      .stat-item:last-child { border-bottom: none; }
+      .stat-number { font-size: 3rem; }
+
+      .plans-grid { grid-template-columns: 1fr; }
+      .coverage-inner { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .plan-card { padding: 2rem; }
+
+      .logo { font-size: 1.5rem; }
+
+      .section-title { font-size: clamp(2rem, 6vw, 3rem); }
+      .coverage-map { aspect-ratio: 1; }
+      .contact-icon { width: 48px; height: 48px; font-size: 1.3rem; }
+      .contact-value { font-size: 1.4rem; }
+    }
+
+    @media (max-width: 480px) {
+      .hero { padding: 5rem 1rem 2rem; }
+
+      h1 {
+        font-size: 2.5rem !important;
+      }
+
+      .hero-logo img {
+        width: 220px;
+        height: 220px;
+        padding: 12px;
+      }
+
+      .hero-sub {
+        font-size: 0.9rem;
+      }
+
+      .btn-primary, .btn-ghost {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">
+      BLADES <span>INTERNET</span>
+    </div>
+    <ul>
+      <li><a href="#plans">Plans</a></li>
+      <li><a href="#coverage">Coverage</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#contact" class="nav-cta">Subscribe</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="hero-content">
+      <div class="hero-logo">
+        <img src="./logo.jpg" alt="Blades Internet Logo"/>
+      </div>
+      <div class="hero-text">
+        <div class="hero-badge">
+          <div class="badge-dot"></div>
+          Now Serving Masinloc, Zambales
+        </div>
+        <h1>FAST.<br><em>SHARP.</em><br>RELIABLE.</h1>
+        <p class="hero-sub">
+          High-speed internet delivered to your home.<br>
+          <strong>Plans starting at ₱600/month.</strong>
+        </p>
+        <div class="hero-btns">
+          <a href="#plans" class="btn-primary">View Plans</a>
+          <a href="#contact" class="btn-ghost">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-number">35<span style="font-size:2rem">Mbps</span></div>
+      <div class="stat-label">Max Speed Available</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">24/7</div>
+      <div class="stat-label">Network Uptime</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">3</div>
+      <div class="stat-label">Affordable Plans</div>
+    </div>
+  </div>
+
+  <!-- PLANS -->
+  <section id="plans">
+    <div class="plans">
+      <div class="plans-header">
+        <div class="section-tag">// Customer Plans</div>
+        <h2 class="section-title">CHOOSE YOUR <span>SPEED</span></h2>
+        <p style="font-family:'Barlow Condensed',sans-serif;color:var(--muted);font-size:1.1rem;letter-spacing:0.05em;">
+          Pick the plan that fits your needs. No hidden charges.
+        </p>
+      </div>
+      <div class="plans-grid">
+
+        <!-- Plan 1 -->
+        <div class="plan-card">
+          <div class="plan-speed">15</div>
+          <div class="plan-unit">Mbps Download</div>
+          <div class="plan-name">Starter Blade</div>
+          <div class="plan-divider"></div>
+          <div class="plan-price">
+            <span class="price-peso">₱</span>
+            <span class="price-amount">600</span>
+          </div>
+          <div class="price-period">Per Month</div>
+          <ul class="plan-features">
+            <li>15 Mbps Download Speed</li>
+            <li>Stable Home Connection</li>
+            <li>Perfect for Browsing & Streaming</li>
+            <li>Unlimited Data</li>
+          </ul>
+          <a href="#contact" class="plan-btn">Get Started</a>
+        </div>
+
+        <!-- Plan 2 (Featured) -->
+        <div class="plan-card featured">
+          <div class="best-badge">Most Popular</div>
+          <div class="plan-speed">25</div>
+          <div class="plan-unit">Mbps Download</div>
+          <div class="plan-name">Power Blade</div>
+          <div class="plan-divider"></div>
+          <div class="plan-price">
+            <span class="price-peso">₱</span>
+            <span class="price-amount">1,000</span>
+          </div>
+          <div class="price-period">Per Month</div>
+          <ul class="plan-features">
+            <li>25 Mbps Download Speed</li>
+            <li>Great for Multiple Devices</li>
+            <li>HD Streaming & Video Calls</li>
+            <li>Unlimited Data</li>
+          </ul>
+          <a href="#contact" class="plan-btn">Get Started</a>
+        </div>
+
+        <!-- Plan 3 -->
+        <div class="plan-card">
+          <div class="plan-speed">35</div>
+          <div class="plan-unit">Mbps Download</div>
+          <div class="plan-name">Ultra Blade</div>
+          <div class="plan-divider"></div>
+          <div class="plan-price">
+            <span class="price-peso">₱</span>
+            <span class="price-amount">1,500</span>
+          </div>
+          <div class="price-period">Per Month</div>
+          <ul class="plan-features">
+            <li>35 Mbps Download Speed</li>
+            <li>Handles Heavy Usage</li>
+            <li>4K Streaming & Online Gaming</li>
+            <li>Unlimited Data</li>
+          </ul>
+          <a href="#contact" class="plan-btn">Get Started</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- COVERAGE -->
+  <section id="coverage" class="coverage-section">
+    <div class="coverage-inner">
+      <div class="coverage-map">
+        <div class="map-rings">
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+        </div>
+        <div class="map-pin-area">
+          <div class="map-pin-icon">📍</div>
+          <div class="map-pin-label">Masinloc</div>
+          <div class="map-pin-sub">Zambales, Philippines</div>
+        </div>
+      </div>
+      <div class="coverage-info">
+        <div class="section-tag">// Service Coverage</div>
+        <h2 class="section-title">WE COVER <span>YOUR</span> AREA</h2>
+        <p class="coverage-detail">
+          Blades Internet proudly serves the community of Masinloc, Zambales,
+          bringing sharp and fast connectivity right to your doorstep.
+        </p>
+        <div class="coverage-areas">
+          <div class="coverage-area-item">
+            <div class="area-icon"></div>
+            Masinloc, Zambales
+          </div>
+          <div class="coverage-area-item">
+            <div class="area-icon"></div>
+            Residential Areas
+          </div>
+          <div class="coverage-area-item">
+            <div class="area-icon"></div>
+            Commercial Establishments
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-section">
+      <div class="section-tag">// Get Connected</div>
+      <h2 class="section-title">CONTACT <span>US</span></h2>
+      <p style="font-family:'Barlow Condensed',sans-serif;color:var(--muted);font-size:1.1rem;margin-bottom:0.5rem;">
+        Ready to subscribe or have questions? Reach out to us today.
+      </p>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="contact-icon">📞</div>
+          <div>
+            <div class="contact-label">Call / Text Us</div>
+            <div class="contact-value">0926 036 2954</div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-label">Service Area</div>
+            <div class="contact-value">Masinloc, Zambales</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">BLADES <span>INTERNET</span></div>
+    <div class="footer-tagline">Fast · Sharp · Reliable — Masinloc, Zambales</div>
+    <div class="footer-copy">&copy; 2025 Blades Internet. All rights reserved.</div>
+  </footer>
+
+</body>
+</html>
